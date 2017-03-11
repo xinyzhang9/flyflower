@@ -1,0 +1,20 @@
+{
+  "name": "flyflower",
+  "version": "1.0.0",
+  "description": "flyflower game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "poem",
+    "flyflower",
+    "game"
+  ],
+  "author": "xinyzhang9@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "sqlite-to-json": "^0.1.2",
+    "sqlite3": "^3.1.8"
+  }
+}
