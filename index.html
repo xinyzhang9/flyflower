@@ -6,24 +6,40 @@
 <body>
 	<div class = 'container'>
 		<div class="header">
-                 <h2>飞花令</h2><a href="#" class="refresh">Refresh</a>
+                 <h2>飞花令</h2>
+                 <p>
+		            Author: <a href="https://github.com/xinyzhang9">Xinyang</a> | Github: <a href = 'https://github.com/xinyzhang9/flyflower'>source code</a>      
+		        </p>
         </div>
+        <hr />
+        
+    	<input type = 'text' id = 'userinput'></input>
+    	<button id = 'search'>search</button>
+    	<button id = 'refresh'>refresh</button>
         <div id = 'res'>
-        	<p id = 'title'>title</p>
-        	<p id = 'author'>author</p>
-        	<p id = 'content'>content</p>
+        	<p id = 'title'></p>
+        	<p id = 'author'></p>
+        	<p id = 'content'></p>
         </div>
 		
-        <hr />
-            <p>
-                Author: <a href="https://github.com/xinyzhang9">Xinyang</a> | Github: <a href = 'https://github.com/xinyzhang9/flyflower'>source code</a>      
-            </p>
+
 	</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.3.22/rx.all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
+
 <script type="text/javascript">
-	var refreshButton = document.querySelector('.refresh');
+	var refreshButton = document.getElementById('refresh');
+	var userInput = document.getElementById('userinput');
+	var searchButton = document.getElementById('search');
+
+	var res_div = document.getElementById('res');
+	var title_p = document.getElementById('title');
+	var content_p = document.getElementById('content');
+	var author_p = document.getElementById('author');
+
 	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
+	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
 
 	Storage.prototype.setObj = function(key, obj) {
 	    return this.setItem(key, JSON.stringify(obj))
@@ -32,7 +48,7 @@
 	    return JSON.parse(this.getItem(key))
 	}
 
-	var p_obj = null;
+	var res = [];
 
 	function loadJSON(file, callback) {   
 	    var xobj = new XMLHttpRequest();
@@ -47,24 +63,18 @@
 	    xobj.send(null);  
 	 }
 
-	function load() {
-	    loadJSON("data/poetry.json", function(response) {
-	        p_obj = JSON.parse(response);
-	        console.log(p_obj.length);
-	        for(var p of p_obj){
-	        	// console.log(p.d_author);
-	        	// console.log(p.d_poetry);
-	        }
-	        return p_obj;
-	    });
-	}
+	// function load() {
+	//     loadJSON("data/poetry.json", function(response) {
+	//         p_obj = JSON.parse(response);
+	//         console.log(`loaded ${p_obj.length} poems`);
+	//         return p_obj;
+	//     });
+	// }
 
 	function match(c){
 		console.log(c);
 		loadJSON("data/poetry.json", function(response) {
 	        p_obj = JSON.parse(response);
-	        var res = [];
-	        // console.log(p_obj);
 	        for(var p of p_obj){
 	        	var content = p.d_poetry;
 	        	if(content.indexOf(c) >= 0){
@@ -72,44 +82,46 @@
 	        		res.push(p);
 	        	}
 	        }
-	        console.log(res);
-	        return res;
+	        return render(res[0]);
 	    });
+	}
+
+	function refreshPoem(){
+		if(res.length < 1) return;
+		var len = res.length;
+		var chosen = res[Math.floor(Math.random()*len)];
+		return render(chosen);
 	}
 
 	// load();
 
-	var requestStream = refreshClickStream.startWith('startup click')
-	    .map(function(){	    
-	        return load();
-	    })
+	// var requestStream = refreshClickStream.startWith('startup click')
+	//     .map(function(){	    
+	//         return load();
+	//     })
 
-	var responseStream = requestStream
-	    .flatMap(function (requestUrl) {
-	        return Rx.Observable.fromPromise($.getJSON(requestUrl));
-	    });
+	// var responseStream = requestStream
+	//     .flatMap(function (requestUrl) {
+	//         return Rx.Observable.fromPromise($.getJSON(requestUrl));
+	//     });
 
-	function createSuggestionStream(closeClickStream) {
-	    return closeClickStream.startWith('startup click')
-	        .combineLatest(responseStream,             
-	            function(click, p) {
-	                return p[0];
-	            }
-	        )
-	        .merge(
-	            refreshClickStream.map(function(){ 
-	                return null;
-	            })
-	        )
-	        .startWith(null);
-	}
+	// function createSuggestionStream(closeClickStream) {
+	//     return closeClickStream.startWith('startup click')
+	//         .combineLatest(responseStream,             
+	//             function(click, p) {
+	//                 return p[0];
+	//             }
+	//         )
+	//         .merge(
+	//             refreshClickStream.map(function(){ 
+	//                 return null;
+	//             })
+	//         )
+	//         .startWith(null);
+	// }
 
 	function render(poem){
-		console.log(poem);
-		var res_div = document.getElementById('res');
-		var title_p = document.getElementById('title');
-		var content_p = document.getElementById('content');
-		var author_p = document.getElementById('author');
+		// console.log(poem);
 		if(poem === null){
 			res_div.style.visibility = 'hidden';
 		}else{
@@ -120,14 +132,20 @@
 		}
 	}
 
-	var suggestionStream = createSuggestionStream(refreshClickStream);
+	// var suggestionStream = createSuggestionStream(refreshClickStream);
 
-	suggestionStream.subscribe(function(x){
-		//do something
-		render(x);
+	// suggestionStream.subscribe(function(x){
+	// 	//do something
+	// 	render(x);
+	// })
+
+	searchButtonStream.subscribe(function(){
+		match(userInput.value);
 	})
 
-
+	refreshClickStream.subscribe(function(){
+		refreshPoem();
+	})
 
 </script>
 </body>

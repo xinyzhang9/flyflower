@@ -14,6 +14,7 @@
   "author": "xinyzhang9@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "rx-dom": "^7.0.3",
     "sqlite-to-json": "^0.1.2",
     "sqlite3": "^3.1.8"
   }
