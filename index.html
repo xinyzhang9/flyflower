@@ -4,11 +4,37 @@
 	<meta charset="utf-8" />
 </head>
 <body>
-	<div id = 'result'></div>
+	<div class = 'container'>
+		<div class="header">
+                 <h2>飞花令</h2><a href="#" class="refresh">Refresh</a>
+        </div>
+        <div id = 'res'>
+        	<p id = 'title'>title</p>
+        	<p id = 'author'>author</p>
+        	<p id = 'content'>content</p>
+        </div>
+		
+        <hr />
+            <p>
+                Author: <a href="https://github.com/xinyzhang9">Xinyang</a> | Github: <a href = 'https://github.com/xinyzhang9/flyflower'>source code</a>      
+            </p>
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.3.22/rx.all.js"></script>
 <script type="text/javascript">
-	var p_obj = null;
-	function loadJSON(file, callback) {   
+	var refreshButton = document.querySelector('.refresh');
+	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 
+	Storage.prototype.setObj = function(key, obj) {
+	    return this.setItem(key, JSON.stringify(obj))
+	}
+	Storage.prototype.getObj = function(key) {
+	    return JSON.parse(this.getItem(key))
+	}
+
+	var p_obj = null;
+
+	function loadJSON(file, callback) {   
 	    var xobj = new XMLHttpRequest();
 	    xobj.overrideMimeType("application/json");
 	    xobj.open('GET', file, true); // Replace 'my_data' with the path to your file
@@ -22,34 +48,85 @@
 	 }
 
 	function load() {
-	    
 	    loadJSON("data/poetry.json", function(response) {
-
 	        p_obj = JSON.parse(response);
-	        // console.log(p_obj);
+	        console.log(p_obj.length);
 	        for(var p of p_obj){
-	        	console.log(p.d_author);
-	        	console.log(p.d_poetry);
+	        	// console.log(p.d_author);
+	        	// console.log(p.d_poetry);
 	        }
+	        return p_obj;
 	    });
 	}
 
 	function match(c){
 		console.log(c);
 		loadJSON("data/poetry.json", function(response) {
-
 	        p_obj = JSON.parse(response);
+	        var res = [];
 	        // console.log(p_obj);
 	        for(var p of p_obj){
 	        	var content = p.d_poetry;
 	        	if(content.indexOf(c) >= 0){
-	        		console.log(content);
+	        		// console.log(content);
+	        		res.push(p);
 	        	}
 	        }
+	        console.log(res);
+	        return res;
 	    });
 	}
 
-	match('美酒');
+	// load();
+
+	var requestStream = refreshClickStream.startWith('startup click')
+	    .map(function(){	    
+	        return load();
+	    })
+
+	var responseStream = requestStream
+	    .flatMap(function (requestUrl) {
+	        return Rx.Observable.fromPromise($.getJSON(requestUrl));
+	    });
+
+	function createSuggestionStream(closeClickStream) {
+	    return closeClickStream.startWith('startup click')
+	        .combineLatest(responseStream,             
+	            function(click, p) {
+	                return p[0];
+	            }
+	        )
+	        .merge(
+	            refreshClickStream.map(function(){ 
+	                return null;
+	            })
+	        )
+	        .startWith(null);
+	}
+
+	function render(poem){
+		console.log(poem);
+		var res_div = document.getElementById('res');
+		var title_p = document.getElementById('title');
+		var content_p = document.getElementById('content');
+		var author_p = document.getElementById('author');
+		if(poem === null){
+			res_div.style.visibility = 'hidden';
+		}else{
+			res_div.style.visibility = 'visible';
+			title_p.textContent = poem.d_title;
+			content_p.textContent = poem.d_poetry;
+			author_p.textContent = poem.d_author;
+		}
+	}
+
+	var suggestionStream = createSuggestionStream(refreshClickStream);
+
+	suggestionStream.subscribe(function(x){
+		//do something
+		render(x);
+	})
+
 
 
 </script>
