@@ -2,6 +2,7 @@
 <head>
 	<title>flyflower</title>
 	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="basic.css">
 </head>
 <body>
 	<div class = 'container'>
@@ -93,51 +94,48 @@
 		return render(chosen);
 	}
 
-	// load();
+	function highlight(s,c){
+		var splitArray = s.trim().split(c);
+		var tramsformArray = splitArray.map(function(item){
+			return "<span class = 'normal'>"+item+"</span>"
+		});
 
-	// var requestStream = refreshClickStream.startWith('startup click')
-	//     .map(function(){	    
-	//         return load();
-	//     })
+		var res = tramsformArray.join("<span class = 'red'>"+c+"</span>");
+		return res;
 
-	// var responseStream = requestStream
-	//     .flatMap(function (requestUrl) {
-	//         return Rx.Observable.fromPromise($.getJSON(requestUrl));
-	//     });
+	}
 
-	// function createSuggestionStream(closeClickStream) {
-	//     return closeClickStream.startWith('startup click')
-	//         .combineLatest(responseStream,             
-	//             function(click, p) {
-	//                 return p[0];
-	//             }
-	//         )
-	//         .merge(
-	//             refreshClickStream.map(function(){ 
-	//                 return null;
-	//             })
-	//         )
-	//         .startWith(null);
-	// }
+	String.prototype.trunkTitle = function(){
+		var index = this.indexOf('】');
+		return this.slice(index+1).trim();
+	}
+
+	String.prototype.trunkNote = function(){
+		var arr = this.split('');
+		var transformArray = arr.filter(function(c){
+			return (c !== '[' && c !== ']' && isNaN(parseInt(c)));
+		})
+		return transformArray.join('');
+	}
 
 	function render(poem){
-		// console.log(poem);
 		if(poem === null){
 			res_div.style.visibility = 'hidden';
 		}else{
+			console.log(poem.d_poetry);
 			res_div.style.visibility = 'visible';
 			title_p.textContent = poem.d_title;
-			content_p.textContent = poem.d_poetry;
+			// content_p.textContent = poem.d_poetry;
+			content_p.innerHTML = highlight(poem.d_poetry.trunkTitle().trunkNote(),userInput.value);
 			author_p.textContent = poem.d_author;
+			var els = document.querySelectorAll(".red");
+			if(els){
+				for(el of els){
+					el.style.color = 'red';
+				}
+			}
 		}
 	}
-
-	// var suggestionStream = createSuggestionStream(refreshClickStream);
-
-	// suggestionStream.subscribe(function(x){
-	// 	//do something
-	// 	render(x);
-	// })
 
 	searchButtonStream.subscribe(function(){
 		match(userInput.value);
