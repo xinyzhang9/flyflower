@@ -29,9 +29,7 @@
         	<div id = 'full'></div>
         </div>
 	</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
-
 <script type="text/javascript">
 	var refreshButton = document.getElementById('refresh');
 	var userInput = document.getElementById('userinput');
@@ -51,6 +49,8 @@
 	document.getElementById('error').style.display = 'none';
 	showButton.style.visibility = 'hidden';
 
+	var res = [];
+
 	showButton.addEventListener('click',function(){
 		if(full_p.style.display == "none"){
 			full_p.style.display = "block";
@@ -68,8 +68,6 @@
 	    return JSON.parse(this.getItem(key))
 	}
 
-	var res = [];
-
 	function loadJSON(file, callback) {   
 	    var xobj = new XMLHttpRequest();
 	    xobj.overrideMimeType("application/json");
@@ -85,7 +83,6 @@
 
 	function match(c){
 		if(!c || c.length > 1){
-			// document.getElementById('error').textContent = '根据规则，只能输入一个汉字。';
 			$('#error').fadeIn('slow');
 			document.getElementById('error').style.color = 'red';
 			setTimeout(function(){ $('#error').fadeOut() }, 1000);
@@ -108,7 +105,6 @@
 		        	}
 	        	}
 	        }
-	        // console.log(`found ${res.length} results`);
 	        showButton.style.visibility = 'visible';
 	        var len = res.length;
 	        return render(res[Math.floor(Math.random()*len)]);
@@ -171,20 +167,17 @@
 			}
 		}
 	}
-
 	searchButtonStream.subscribe(function(){
 		res = [];
 		full_p.style.display = "none";
 		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
 		match(userInput.value);
 	})
-
 	refreshClickStream.subscribe(function(){
 		full_p.style.display = "none";
 		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
 		refreshPoem();
 	})
-
 </script>
 <script>if(!image_urls){var image_urls=Array()}if(!flash_urls){var flash_urls=Array()}image_urls['rain1']="pinkpetal1.png";image_urls['rain2']="pinkpetal2.png";image_urls['rain3']="redpetal1.png";image_urls['rain4']="redpetal2.png";$(document).ready(function(){var c=$(window).width();var d=$(window).height();var e=function(a,b){return Math.round(a+(Math.random()*(b-a)))};var f=function(a){setTimeout(function(){a.css({left:e(0,c)+'px',top:'-30px',display:'block',opacity:'0.'+e(10,100)}).animate({top:(d-10)+'px'},e(7500,8000),function(){$(this).fadeOut('slow',function(){f(a)})})},e(1,8000))};$('<div></div>').attr('id','rainDiv')
 .css({position:'fixed',width:(c-20)+'px',height:'1px',left:'0px',top:'-5px',display:'block'}).appendTo('body');for(var i=1;i<=20;i++){var g=$('<img/>').attr('src',image_urls['rain'+e(1,4)])
@@ -197,8 +190,6 @@
 
   ga('create', 'UA-77776468-11', 'auto');
   ga('send', 'pageview');
-
 </script>
-
 </body>
 </html>
