@@ -12,7 +12,7 @@ A: ...
 [live demo](https://xinyzhang9.github.io/flyflower/)
 
 ## Technology
-**Rxjs**: interact with user's input
+**Rxjs**: interact with user's input.  
 **SQLite**: store original databases. And transformed to JSON before use.  
 
 ## Screenshot
