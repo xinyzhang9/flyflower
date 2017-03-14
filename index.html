@@ -174,6 +174,8 @@
 
 	searchButtonStream.subscribe(function(){
 		res = [];
+		full_p.style.display = "none";
+		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
 		match(userInput.value);
 	})
 
