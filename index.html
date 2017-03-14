@@ -19,6 +19,7 @@
     		<input type = 'text' id = 'userinput'></input>
 	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
 	    	<button id = 'refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
+	    	<span id = 'error' class = 'red'>根据规则，只能输入一个汉字。</span>
 	    </div>
         <div id = 'res'>
         	<h3 id = 'title'></h3>
@@ -47,6 +48,7 @@
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
 
 	full_p.style.display = 'none';
+	document.getElementById('error').style.display = 'none';
 	showButton.style.visibility = 'hidden';
 
 	showButton.addEventListener('click',function(){
@@ -82,8 +84,14 @@
 	 }
 
 	function match(c){
-		if(!c || c.length > 1) return;
-		console.log(c);
+		if(!c || c.length > 1){
+			// document.getElementById('error').textContent = '根据规则，只能输入一个汉字。';
+			$('#error').fadeIn('slow');
+			document.getElementById('error').style.color = 'red';
+			setTimeout(function(){ $('#error').fadeOut() }, 1000);
+			return;
+		}
+		document.getElementById('error').textContent ='';
 		loadJSON("data/p2.json", function(response) {
 	        var p_obj = JSON.parse(response);
 	        for(var p of p_obj){
