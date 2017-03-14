@@ -25,7 +25,7 @@
         	<p id = 'author'></p>
         	<p id = 'content'></p>
         	<button id = 'show_full'><i class="fa fa-toggle-off" aria-hidden="true"></i></button>
-        	<p id = 'full'></p>
+        	<div id = 'full'></div>
         </div>
 	</div>
 
@@ -137,8 +137,10 @@
 	}
 
 	String.prototype.formatLine = function(){
-		var splitArray = this.trim().split('\n');
-		var res = splitArray.join("<br />");
+		var splitArray = this.trim().split('\n').map(function(item){
+			return '<p>'+item+'</p>'
+		});
+		var res = splitArray.join("");
 
 		return res;
 	}
