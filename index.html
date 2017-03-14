@@ -84,7 +84,7 @@
 	function match(c){
 		if(!c || c.length > 1) return;
 		console.log(c);
-		loadJSON("data/poetry.json", function(response) {
+		loadJSON("data/p2.json", function(response) {
 	        var p_obj = JSON.parse(response);
 	        for(var p of p_obj){
 	        	var content = p.d_poetry.trunkTitle();

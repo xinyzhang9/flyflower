@@ -1,0 +1,120 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'fs' ]
+2 info using npm@3.3.12
+3 info using node@v5.3.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData fs
+8 silly fetchNamedPackageData fs
+9 silly mapToRegistry name fs
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry uri https://registry.npmjs.org/fs
+13 verbose request uri https://registry.npmjs.org/fs
+14 verbose request no auth needed
+15 info attempt registry request try #1 at 8:05:44 PM
+16 verbose request id eb95bef4c2ea6fa0
+17 verbose etag "4OOEX5DGH00ODU19WJK14YLBX"
+18 http request GET https://registry.npmjs.org/fs
+19 http 200 https://registry.npmjs.org/fs
+20 verbose headers { server: 'nginx/1.10.1',
+20 verbose headers   'content-type': 'application/json',
+20 verbose headers   'last-modified': 'Fri, 09 Dec 2016 16:38:04 GMT',
+20 verbose headers   etag: 'W/"584addec-d57"',
+20 verbose headers   'content-encoding': 'gzip',
+20 verbose headers   'cache-control': 'max-age=300',
+20 verbose headers   'content-length': '1015',
+20 verbose headers   'accept-ranges': 'bytes',
+20 verbose headers   date: 'Tue, 14 Mar 2017 03:05:44 GMT',
+20 verbose headers   via: '1.1 varnish',
+20 verbose headers   age: '51',
+20 verbose headers   connection: 'keep-alive',
+20 verbose headers   'x-served-by': 'cache-sjc3145-SJC',
+20 verbose headers   'x-cache': 'HIT',
+20 verbose headers   'x-cache-hits': '1',
+20 verbose headers   'x-timer': 'S1489460744.346380,VS0,VE0',
+20 verbose headers   vary: 'Accept-Encoding' }
+21 silly get cb [ 200,
+21 silly get   { server: 'nginx/1.10.1',
+21 silly get     'content-type': 'application/json',
+21 silly get     'last-modified': 'Fri, 09 Dec 2016 16:38:04 GMT',
+21 silly get     etag: 'W/"584addec-d57"',
+21 silly get     'content-encoding': 'gzip',
+21 silly get     'cache-control': 'max-age=300',
+21 silly get     'content-length': '1015',
+21 silly get     'accept-ranges': 'bytes',
+21 silly get     date: 'Tue, 14 Mar 2017 03:05:44 GMT',
+21 silly get     via: '1.1 varnish',
+21 silly get     age: '51',
+21 silly get     connection: 'keep-alive',
+21 silly get     'x-served-by': 'cache-sjc3145-SJC',
+21 silly get     'x-cache': 'HIT',
+21 silly get     'x-cache-hits': '1',
+21 silly get     'x-timer': 'S1489460744.346380,VS0,VE0',
+21 silly get     vary: 'Accept-Encoding' } ]
+22 verbose get saving fs to /Users/xinyang/.npm/registry.npmjs.org/fs/.cache.json
+23 silly install normalizeTree
+24 silly loadCurrentTree Finishing
+25 silly loadIdealTree Starting
+26 silly install loadIdealTree
+27 silly cloneCurrentTree Starting
+28 silly install cloneCurrentTreeToIdealTree
+29 silly cloneCurrentTree Finishing
+30 silly loadShrinkwrap Starting
+31 silly install loadShrinkwrap
+32 silly loadShrinkwrap Finishing
+33 silly loadAllDepsIntoIdealTree Starting
+34 silly install loadAllDepsIntoIdealTree
+35 silly resolveWithNewModule fs@0.0.0 checking installable status
+36 silly cache add args [ 'fs', null ]
+37 verbose cache add spec fs
+38 silly cache add parsed spec Result {
+38 silly cache add   raw: 'fs',
+38 silly cache add   scope: null,
+38 silly cache add   name: 'fs',
+38 silly cache add   rawSpec: '',
+38 silly cache add   spec: '*',
+38 silly cache add   type: 'range' }
+39 silly addNamed fs@*
+40 verbose addNamed "*" is a valid semver range for fs
+41 silly addNameRange { name: 'fs', range: '*', hasData: false }
+42 silly mapToRegistry name fs
+43 silly mapToRegistry using default registry
+44 silly mapToRegistry registry https://registry.npmjs.org/
+45 silly mapToRegistry uri https://registry.npmjs.org/fs
+46 verbose addNameRange registry:https://registry.npmjs.org/fs not in flight; fetching
+47 verbose get https://registry.npmjs.org/fs not expired, no request
+48 silly addNameRange number 2 { name: 'fs', range: '*', hasData: true }
+49 silly addNameRange versions [ 'fs', [ '0.0.1-security', '0.0.0', '0.0.2' ] ]
+50 silly addNamed fs@0.0.2
+51 verbose addNamed "0.0.2" is a plain semver version for fs
+52 silly cache afterAdd fs@0.0.2
+53 verbose afterAdd /Users/xinyang/.npm/fs/0.0.2/package/package.json not in flight; writing
+54 verbose afterAdd /Users/xinyang/.npm/fs/0.0.2/package/package.json written
+55 silly rollbackFailedOptional Starting
+56 silly rollbackFailedOptional Finishing
+57 silly runTopLevelLifecycles Starting
+58 silly runTopLevelLifecycles Finishing
+59 silly install printInstalled
+60 verbose stack Error: Error extracting /Users/xinyang/.npm/fs/0.0.0/package.tgz archive: ENOENT: no such file or directory, open '/Users/xinyang/.npm/fs/0.0.0/package.tgz'
+60 verbose stack     at ReadStream.<anonymous> (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:286:10)
+60 verbose stack     at emitOne (events.js:77:13)
+60 verbose stack     at ReadStream.emit (events.js:169:7)
+60 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:179:14
+60 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:230:16
+60 verbose stack     at FSReqWrap.oncomplete (fs.js:82:15)
+61 verbose cwd /Users/xinyang/Documents/flyflower
+62 error Darwin 16.4.0
+63 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "--save" "fs"
+64 error node v5.3.0
+65 error npm  v3.3.12
+66 error code EREADFILE
+67 error Error extracting /Users/xinyang/.npm/fs/0.0.0/package.tgz archive: ENOENT: no such file or directory, open '/Users/xinyang/.npm/fs/0.0.0/package.tgz'
+68 error If you need help, you may report this error at:
+68 error     <https://github.com/npm/npm/issues>
+69 verbose exit [ 1, true ]
