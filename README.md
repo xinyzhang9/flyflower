@@ -1,4 +1,4 @@
-# flyflower
+# Flyflower(飞花令)
 Flyflower for Chinese poems(飞花令) is an interesting word game for players who knows Chinews culture well.  
 Two players take turns to speak out a verse which contains a special character like **花** and see who fails to do that.
 
@@ -12,4 +12,8 @@ A: ...
 [live demo](https://xinyzhang9.github.io/flyflower/)
 
 ## Technology
-Rxjs, SQLite
+**Rxjs**: interact with user's input
+**SQLite**: store original databases. And transformed to JSON before use.  
+
+## Screenshot
+![alt tag](https://raw.githubusercontent.com/xinyzhang9/flyflower/master/screen.png)
