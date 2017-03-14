@@ -3,44 +3,71 @@
 	<title>flyflower</title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" type="text/css" href="basic.css">
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+	<script src="https://use.fontawesome.com/b8e7fe9976.js"></script>
 </head>
 <body>
 	<div class = 'container'>
 		<div class="header">
-                 <h2>飞花令</h2>
-                 <p>
-		            Author: <a href="https://github.com/xinyzhang9">Xinyang</a> | Github: <a href = 'https://github.com/xinyzhang9/flyflower'>source code</a>      
-		        </p>
-        </div>
-        <hr />
-        
-    	<input type = 'text' id = 'userinput'></input>
-    	<button id = 'search'>search</button>
-    	<button id = 'refresh'>refresh</button>
+	        <h1>飞<span style = 'color:hotpink;'>花</span>令</h1>
+	        <p>
+	        	作者: <a href="https://github.com/xinyzhang9" target = '_blank'>阳哥</a>
+	        </p>
+	        <hr class = 'style-two' />
+    	</div>
+	    <div id = 'mainbox'>
+    		<input type = 'text' id = 'userinput'></input>
+	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
+	    	<button id = 'refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
+	    </div>
         <div id = 'res'>
-        	<p id = 'title'></p>
+        	<h3 id = 'title'></h3>
         	<p id = 'author'></p>
         	<p id = 'content'></p>
+        	<button id = 'show_full'><i class="fa fa-toggle-off" aria-hidden="true"></i></button>
+        	<p id = 'full'></p>
         </div>
-		
-
 	</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
+
+<script>
+if(typeof jQuery=='undefined'){document.write('<'+'script');document.write(' language="javascript"');document.write(' type="text/javascript"');document.write(' src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">');document.write('</'+'script'+'>')}</script><script>if(!image_urls){var image_urls=Array()}if(!flash_urls){var flash_urls=Array()}image_urls['rain1']="http://2.bp.blogspot.com/-IQXNv-_CBLE/TpWcK7LL4VI/AAAAAAAAG0I/bcxYcqc_uI0/pinkpetal1.png";image_urls['rain2']="http://4.bp.blogspot.com/-teXCIicWPF4/TpWcLLg0A2I/AAAAAAAAG0U/IPPCr1gponc/pinkpetal2.png";image_urls['rain3']="http://3.bp.blogspot.com/-3JG9HLECCRU/TpWcLZGSYtI/AAAAAAAAG0g/zIJINua93TE/redpetal1.png";image_urls['rain4']="http://2.bp.blogspot.com/-BByhQEK5E24/TpWcLux4xRI/AAAAAAAAG0s/x2hIr1AV_Ac/redpetal2.png";$(document).ready(function(){var c=$(window).width();var
+d=$(window).height();var e=function(a,b){return Math.round(a+(Math.random()*(b-a)))};var f=function(a){setTimeout(function(){a.css({left:e(0,c)+'px',top:'-30px',display:'block',opacity:'0.'+e(10,100)}).animate({top:(d-10)+'px'},e(7500,8000),function(){$(this).fadeOut('slow',function(){f(a)})})},e(1,8000))};$('<div></div>').attr('id','rainDiv')
+.css({position:'fixed',width:(c-20)+'px',height:'1px',left:'0px',top:'-5px',display:'block'}).appendTo('body');for(var i=1;i<=20;i++){var g=$('<img/>').attr('src',image_urls['rain'+e(1,4)])
+.css({position:'absolute',left:e(0,c)+'px',top:'-30px',display:'block',opacity:'0.'+e(10,100),'margin-left':0}).addClass('rainDrop').appendTo('#rainDiv');f(g);g=null};var h=0;var j=0;$(window).resize(function(){c=$(window).width();d=$(window).height()})});</script>
+<script>if(typeof jQuery=='undefined'){document.write('<'+'script');document.write(' language="javascript"');document.write(' type="text/javascript"');document.write(' src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">');document.write('</'+'script'+'>')}</script><script>$(document).ready(function(){var a=$('<img>').attr({'src':'http://2.bp.blogspot.com/-IQXNv-_CBLE/TpWcK7LL4VI/AAAAAAAAG0I/bcxYcqc_uI0/pinkpetal1.png','border':0});</script>
 
 <script type="text/javascript">
 	var refreshButton = document.getElementById('refresh');
 	var userInput = document.getElementById('userinput');
 	var searchButton = document.getElementById('search');
+	var showButton = document.getElementById('show_full');
 
 	var res_div = document.getElementById('res');
 	var title_p = document.getElementById('title');
 	var content_p = document.getElementById('content');
 	var author_p = document.getElementById('author');
+	var full_p = document.getElementById('full');
 
 	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
+
+	full_p.style.display = 'none';
+	showButton.style.visibility = 'hidden';
+
+	showButton.addEventListener('click',function(){
+		if(full_p.style.display == "none"){
+			full_p.style.display = "block";
+			showButton.innerHTML = '<i class="fa fa-toggle-on" aria-hidden="true"></i>';
+		}else{
+			full_p.style.display = "none";
+			showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
+		}
+	})
 
 	Storage.prototype.setObj = function(key, obj) {
 	    return this.setItem(key, JSON.stringify(obj))
@@ -64,25 +91,27 @@
 	    xobj.send(null);  
 	 }
 
-	// function load() {
-	//     loadJSON("data/poetry.json", function(response) {
-	//         p_obj = JSON.parse(response);
-	//         console.log(`loaded ${p_obj.length} poems`);
-	//         return p_obj;
-	//     });
-	// }
-
 	function match(c){
+		if(!c || c.length > 1) return;
 		console.log(c);
 		loadJSON("data/poetry.json", function(response) {
 	        p_obj = JSON.parse(response);
 	        for(var p of p_obj){
-	        	var content = p.d_poetry;
-	        	if(content.indexOf(c) >= 0){
-	        		// console.log(content);
-	        		res.push(p);
+	        	var content = p.d_poetry.trunkTitle();
+	        	var sentenses = content.split('。');
+	        	// console.log(sentenses);
+	        	for(sentense of sentenses){
+	        		if(sentense.indexOf(c) >= 0){
+		        		// console.log(content);
+		        		res.push({
+		        			sentense:sentense,
+		        			poem:p
+		        		});
+		        	}
 	        	}
 	        }
+	        console.log(`found ${res.length} results`);
+	        showButton.style.visibility = 'visible';
 	        return render(res[0]);
 	    });
 	}
@@ -102,7 +131,6 @@
 
 		var res = tramsformArray.join("<span class = 'red'>"+c+"</span>");
 		return res;
-
 	}
 
 	String.prototype.trunkTitle = function(){
@@ -118,16 +146,27 @@
 		return transformArray.join('');
 	}
 
-	function render(poem){
-		if(poem === null){
+	String.prototype.recoverSentense = function(){
+		return this+'。';
+	}
+
+	String.prototype.formatLine = function(){
+		var splitArray = this.trim().split('\n');
+		var res = splitArray.join("<br />");
+
+		return res
+	}
+
+	function render(obj){
+		if(!obj){
 			res_div.style.visibility = 'hidden';
 		}else{
-			console.log(poem.d_poetry);
 			res_div.style.visibility = 'visible';
-			title_p.textContent = poem.d_title;
-			// content_p.textContent = poem.d_poetry;
-			content_p.innerHTML = highlight(poem.d_poetry.trunkTitle().trunkNote(),userInput.value);
-			author_p.textContent = poem.d_author;
+			title_p.textContent = obj.poem.d_title;
+			author_p.textContent = obj.poem.d_author;
+			content_p.innerHTML = highlight(obj.sentense.trunkNote().recoverSentense(),userInput.value);
+			// console.log(obj.poem.d_poetry.trunkTitle());
+			full_p.innerHTML = obj.poem.d_poetry.trunkTitle().trunkNote().formatLine();
 			var els = document.querySelectorAll(".red");
 			if(els){
 				for(el of els){
@@ -138,6 +177,7 @@
 	}
 
 	searchButtonStream.subscribe(function(){
+		res = [];
 		match(userInput.value);
 	})
 

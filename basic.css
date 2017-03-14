@@ -1,8 +1,60 @@
+@font-face {
+			    font-family: myFirstFont;
+			    src: url(kai.ttf);
+			}
 body{
 	text-align: center;
 	padding: 20px;
+	font-family: myFirstFont;
 }
 
 .red: {
 	color: red;
 }
+
+.pink: {
+	color: hotpink;
+}
+
+a { 
+	text-decoration: none; 
+	color: gray;
+}
+
+input {
+	vertical-align: top;
+}
+
+button {
+  color: #6496c8;
+  background: rgba(0,0,0,0);
+  border: none;
+  font-size: large;
+}
+
+button:hover {
+  border-color: red;
+  color: red;
+}
+
+#show_full {
+  color: ;
+  background: rgba(0,0,0,0);
+  border: none;
+
+}
+
+#show_full:hover {
+  border-color: orange;
+  color: orange;
+}
+
+hr.style-two {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+#mainbox{
+	padding-top: 20px;
+}
+
