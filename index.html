@@ -89,6 +89,7 @@
 			return;
 		}
 		document.getElementById('error').textContent ='';
+		title_p.textContent = '查找中...';
 		loadJSON("data/p2.json", function(response) {
 	        var p_obj = JSON.parse(response);
 	        for(var p of p_obj){
