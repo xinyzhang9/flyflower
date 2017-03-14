@@ -182,6 +182,8 @@ d=$(window).height();var e=function(a,b){return Math.round(a+(Math.random()*(b-a
 	})
 
 	refreshClickStream.subscribe(function(){
+		full_p.style.display = "none";
+		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
 		refreshPoem();
 	})
 
