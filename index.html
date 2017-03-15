@@ -23,7 +23,7 @@
 	        <hr class = 'style-two' />
     	</div>
 	    <div id = 'mainbox'>
-    		<input type = 'text' id = 'userinput' style="border:1px solid steelblue;" placeholder = '在这里输入汉字'></input>
+    		<input type = 'text' id = 'userinput' style="border:1px solid steelblue;padding-left: 5px;" placeholder = '在这里输入汉字'></input>
 	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
 	    	<button id = 'refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
 			<button id = 'collect'><i class="fa fa-tag" aria-hidden="true"></i></button>
@@ -60,6 +60,7 @@
 	var history_cursur = 0;
 	var res = [];
 	var els = null;
+	var oldInput = null;
 
 	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
@@ -140,6 +141,7 @@
 			renderMsg('请先点击查阅按钮。');
 			return;
 		};
+		console.log('this is refresh');
 		var len = res.length;
 		return render(res[Math.floor(Math.random()*len)]);
 	}
@@ -248,16 +250,26 @@
 	init();
 
 	searchButtonStream.subscribe(function(){
-		res = [];
 		full_p.style.display = "none";
 		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
-		match(userInput.value);
+		if(userInput.value === oldInput){
+			refreshPoem();
+		}else{
+			res = [];
+			oldInput = userInput.value;
+			match(userInput.value);
+		}
 	})
 
 	refreshClickStream.subscribe(function(){
 		full_p.style.display = "none";
 		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
-		refreshPoem();
+		if(userInput.value !== oldInput){
+			renderMsg('请先点击查阅按钮。');
+		}else{
+			refreshPoem();
+		}
+		
 	})
 
 	collectButtonStream.subscribe(function(){
