@@ -16,7 +16,6 @@
 	        <p>作者: <a href="https://github.com/xinyzhang9" target = '_blank'>阳哥</a></p>
 	        <p style = 'color: #F1948A'>
 	        	<i class="fa fa-search" aria-hidden="true"></i> 查阅 | 
-	        	<i class="fa fa-refresh" aria-hidden="true"></i> 遍览 | 
 	        	<i class="fa fa-tag" aria-hidden="true"></i> 收藏 | 
 	        	<i class="fa fa-history" aria-hidden="true"></i> 回顾
 	        </p>
@@ -25,7 +24,6 @@
 	    <div id = 'mainbox'>
     		<input type = 'text' id = 'userinput' style="border:1px solid steelblue;padding-left: 5px;" placeholder = '在这里输入汉字'></input>
 	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
-	    	<button id = 'refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
 			<button id = 'collect'><i class="fa fa-tag" aria-hidden="true"></i></button>
 			<button id = 'history'><i class="fa fa-history" aria-hidden="true"></i></button>
 	    </div>
@@ -41,7 +39,6 @@
 	<div id = 'error' class = 'red'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
 <script type="text/javascript">
-	var refreshButton = document.getElementById('refresh');
 	var userInput = document.getElementById('userinput');
 	var searchButton = document.getElementById('search');
 	var showButton = document.getElementById('show_full');
@@ -62,7 +59,6 @@
 	var els = null;
 	var oldInput = null;
 
-	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
 	var collectButtonStream = Rx.Observable.fromEvent(collectButton,'click');
 	var historyButtonStream = Rx.Observable.fromEvent(historyButton,'click');
@@ -119,10 +115,8 @@
 	        for(var p of p_obj){
 	        	var content = p.d_poetry.trunkTitle();
 	        	var sentenses = content.split('。');
-	        	// console.log(sentenses);
 	        	for(sentense of sentenses){
 	        		if(sentense.includes(c)){
-		        		// console.log(content);
 		        		res.push({
 		        			sentense:sentense,
 		        			poem:p
@@ -137,11 +131,11 @@
 	}
 
 	function refreshPoem(){
-		if(res.length < 1){
-			renderMsg('请先点击查阅按钮。');
+		if(!userInput || userInput.length > 1){
+			renderMsg('根据规则，只能输入一个汉字。')
 			return;
-		};
-		console.log('this is refresh');
+		}
+		// console.log('this is refresh');
 		var len = res.length;
 		return render(res[Math.floor(Math.random()*len)]);
 	}
@@ -195,11 +189,9 @@
 						full: full_p.innerHTML, 
 						id: obj.poem.d_num
 					};
-			// console.log(current);
 			els = document.querySelectorAll(".red");
 			if(els){
 				[].forEach.call(els, function(el) {
-				  // do whatever
 				  el.style.color = "red";
 				});
 			}
@@ -227,7 +219,6 @@
 		els = document.querySelectorAll(".red");
 		if(els){
 			[].forEach.call(els, function(el) {
-			  // do whatever
 			  el.style.color = "red";
 			});
 		}
@@ -259,17 +250,6 @@
 			oldInput = userInput.value;
 			match(userInput.value);
 		}
-	})
-
-	refreshClickStream.subscribe(function(){
-		full_p.style.display = "none";
-		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
-		if(userInput.value !== oldInput){
-			renderMsg('请先点击查阅按钮。');
-		}else{
-			refreshPoem();
-		}
-		
 	})
 
 	collectButtonStream.subscribe(function(){
