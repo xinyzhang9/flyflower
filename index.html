@@ -37,7 +37,7 @@
         	<div id = 'full'></div>
         </div>
 	</div>
-	<div id = 'error' class = 'red'></div>
+	<div id = 'error' class = 'red'>由于微信窗口不支持很多功能，请在上方点击<i class = "fa fa-clone" aria-hidden="true"></i>用默认浏览器打开。</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
 <script type="text/javascript">
 	var refreshButton = document.getElementById('refresh');
@@ -58,6 +58,7 @@
 	var history_collection = [];//max-cap 50
 	var history_cursur = 0;
 	var res = [];
+	var els = null;
 
 	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
@@ -65,7 +66,7 @@
 	var historyButtonStream = Rx.Observable.fromEvent(historyButton,'click');
 
 	full_p.style.display = 'none';
-	error_msg.style.display = 'none';
+	// error_msg.style.display = 'none';
 	showButton.style.visibility = 'hidden';
 
 	showButton.addEventListener('click',function(){
@@ -192,7 +193,7 @@
 						id: obj.poem.d_num
 					};
 			// console.log(current);
-			var els = document.querySelectorAll(".red");
+			els = document.querySelectorAll(".red");
 			if(els){
 				for(el of els){
 					el.style.color = 'red';
@@ -228,6 +229,7 @@
 	}
 
 	function init(){
+		error_msg.style.color = 'red';
 		cart = localStorage.getObj('cart');
 		history_collection = localStorage.getObj('history_collection');
 
