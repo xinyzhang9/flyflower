@@ -1,1 +1,4 @@
 node_modules/
+toJson.js
+handleDatabase.js
+extractCommon.js
