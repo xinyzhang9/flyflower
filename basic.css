@@ -20,6 +20,7 @@ a {
 
 input {
 	vertical-align: top;
+  min-height: 20px;
 }
 
 button {
