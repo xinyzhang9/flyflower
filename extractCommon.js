@@ -1,7 +1,7 @@
 var data = require('./data/p2.json');
 var fs = require('fs');
 console.log(data.length);
-var common = ['春','花','月','夜','水','人','酒'];
+var common = ['春','花','月','夜','水','人','酒','风','雨','红'];
 
 String.prototype.trunkTitle = function(){
 	var index = this.indexOf('】');
