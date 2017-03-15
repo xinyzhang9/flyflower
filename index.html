@@ -11,8 +11,12 @@
 	<div class = 'container'>
 		<div class="header">
 	        <h1>飞<span style = 'color:hotpink;'>花</span>令</h1>
-	        <p>
-	        	作者: <a href="https://github.com/xinyzhang9" target = '_blank'>阳哥</a>
+	        <p>作者: <a href="https://github.com/xinyzhang9" target = '_blank'>阳哥</a></p>
+	        <p style = 'color: #F1948A'>
+	        	<i class="fa fa-search" aria-hidden="true"></i> 查找 | 
+	        	<i class="fa fa-refresh" aria-hidden="true"></i> 下一首 | 
+	        	<i class="fa fa-tag" aria-hidden="true"></i> 加入收藏 | 
+	        	<i class="fa fa-history" aria-hidden="true"></i> 翻阅收藏
 	        </p>
 	        <hr class = 'style-two' />
     	</div>
@@ -20,6 +24,9 @@
     		<input type = 'text' id = 'userinput' style="border:1px solid steelblue;" placeholder = '在这里输入汉字'></input>
 	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
 	    	<button id = 'refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
+			<button id = 'collect'><i class="fa fa-tag" aria-hidden="true"></i></button>
+			<button id = 'history'><i class="fa fa-history" aria-hidden="true"></i></button>
+
 	    	<span id = 'error' class = 'red'>根据规则，只能输入一个汉字。</span>
 	    </div>
         <div id = 'res'>
@@ -36,6 +43,8 @@
 	var userInput = document.getElementById('userinput');
 	var searchButton = document.getElementById('search');
 	var showButton = document.getElementById('show_full');
+	var collectButton = document.getElementById('collect');
+	var historyButton = document.getElementById('history');
 
 	var res_div = document.getElementById('res');
 	var title_p = document.getElementById('title');
@@ -43,14 +52,20 @@
 	var author_p = document.getElementById('author');
 	var full_p = document.getElementById('full');
 
+	var current = null;
+	var cart = {};
+	var history_collection = [];//max-cap 50
+	var history_cursur = 0;
+	var res = [];
+
 	var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
+	var collectButtonStream = Rx.Observable.fromEvent(collectButton,'click');
+	var historyButtonStream = Rx.Observable.fromEvent(historyButton,'click');
 
 	full_p.style.display = 'none';
 	document.getElementById('error').style.display = 'none';
 	showButton.style.visibility = 'hidden';
-
-	var res = [];
 
 	showButton.addEventListener('click',function(){
 		if(full_p.style.display == "none"){
@@ -161,6 +176,14 @@
 			content_p.innerHTML = highlight(obj.sentense.trunkNote().recoverSentense(),userInput.value);
 			// console.log(obj.poem.d_poetry.trunkTitle());
 			full_p.innerHTML = obj.poem.d_poetry.trunkTitle().trunkNote().formatLine();
+			current = {
+						title: obj.poem.d_title, 
+						content: content_p.innerHTML, 
+						author: obj.poem.d_author, 
+						full: full_p.innerHTML, 
+						id: obj.poem.d_num
+					};
+			// console.log(current);
 			var els = document.querySelectorAll(".red");
 			if(els){
 				for(el of els){
@@ -169,17 +192,71 @@
 			}
 		}
 	}
+
+	function renderHistory(){
+		if(history_collection.length < 1) return;
+		var len = history_collection.length;
+		var chosen = history_collection[history_cursur % len];
+		history_cursur++;
+		title_p.textContent = chosen.title;
+		author_p.textContent = chosen.author;
+		content_p.innerHTML = chosen.content;
+		full_p.innerHTML = chosen.full;
+		var els = document.querySelectorAll(".red");
+		if(els){
+			for(el of els){
+				el.style.color = 'red';
+			}
+		}
+	}
+
+	function init(){
+		cart = localStorage.getObj('cart');
+		history_collection = localStorage.getObj('history_collection');
+
+		if(!cart || !history_collection){
+			cart = {};
+			history_collection = [];
+			localStorage.setObj('cart',cart);
+			localStorage.setObj('history_collection',history_collection);
+		}
+
+	}
+
+	init();
+
 	searchButtonStream.subscribe(function(){
 		res = [];
 		full_p.style.display = "none";
 		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
 		match(userInput.value);
 	})
+
 	refreshClickStream.subscribe(function(){
 		full_p.style.display = "none";
 		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
 		refreshPoem();
 	})
+
+	collectButtonStream.subscribe(function(){
+		if(!current) return;
+		if(!cart[current.id]){
+			if(history_collection.length >= 50){
+				var toPop = history_collection.shift();
+				delete cart[toPop.id];
+			}
+			cart[current.id] = current.id;
+			history_collection.push(current);
+			localStorage.setObj('cart',cart);
+			localStorage.setObj('history_collection',history_collection);
+		}
+		// console.log(history_collection);
+	})
+
+	historyButtonStream.subscribe(function(){
+		renderHistory();
+	})
+
 </script>
 <script>if(!image_urls){var image_urls=Array()}if(!flash_urls){var flash_urls=Array()}image_urls['rain1']="pinkpetal1.png";image_urls['rain2']="pinkpetal2.png";image_urls['rain3']="redpetal1.png";image_urls['rain4']="redpetal2.png";$(document).ready(function(){var c=$(window).width();var d=$(window).height();var e=function(a,b){return Math.round(a+(Math.random()*(b-a)))};var f=function(a){setTimeout(function(){a.css({left:e(0,c)+'px',top:'-30px',display:'block',opacity:'0.'+e(10,100)}).animate({top:(d-10)+'px'},e(7500,8000),function(){$(this).fadeOut('slow',function(){f(a)})})},e(1,8000))};$('<div></div>').attr('id','rainDiv')
 .css({position:'fixed',width:(c-20)+'px',height:'1px',left:'0px',top:'-5px',display:'block'}).appendTo('body');for(var i=1;i<=20;i++){var g=$('<img/>').attr('src',image_urls['rain'+e(1,4)])
