@@ -58,6 +58,7 @@
 	var res = [];
 	var els = null;
 	var oldInput = null;
+	var common_cache = null;
 
 	var searchButtonStream = Rx.Observable.fromEvent(searchButton,'click');
 	var collectButtonStream = Rx.Observable.fromEvent(collectButton,'click');
@@ -236,6 +237,11 @@
 			localStorage.setObj('history_collection',history_collection);
 		}
 
+		loadJSON("data/p3.json", function(response) {
+	        common_cache = JSON.parse(response);
+			console.log('cache loaded');
+	    });
+
 	}
 
 	init();
@@ -248,7 +254,16 @@
 		}else{
 			res = [];
 			oldInput = userInput.value;
-			match(userInput.value);
+			if(common_cache && common_cache[userInput.value]){
+				res = common_cache[userInput.value];
+				console.log('loaded from cache');
+				showButton.style.visibility = 'visible';
+		        var len = res.length;
+		        return render(res[Math.floor(Math.random()*len)]);
+			}else{
+				match(userInput.value);
+			}
+			
 		}
 	})
 
