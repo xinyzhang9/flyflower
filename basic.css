@@ -1,7 +1,11 @@
 @font-face {
-			    font-family: myFirstFont;
-			    src: url(kai.ttf);
-			}
+  font-family: myFirstFont;
+  src: url(kai.ttf);
+}
+@font-face{
+  font-family: mySecondFont;
+  src: url(gb.ttf);
+}
 
 body{
 	text-align: center;
@@ -64,5 +68,9 @@ hr.style-two {
   right: 0;
   bottom: 10%;
   z-index: 10;
+}
+
+#full{
+  font-family: mySecondFont;
 }
 
