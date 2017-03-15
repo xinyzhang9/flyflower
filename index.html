@@ -196,9 +196,9 @@
 			// console.log(current);
 			els = document.querySelectorAll(".red");
 			if(els){
-				for(el of els){
+				els.forEach(function(el){
 					el.style.color = 'red';
-				}
+				})
 			}
 		}
 	}
@@ -221,11 +221,11 @@
 		content_p.innerHTML = chosen.content;
 		full_p.innerHTML = chosen.full;
 		
-		var els = document.querySelectorAll(".red");
+		els = document.querySelectorAll(".red");
 		if(els){
-			for(el of els){
+			els.forEach(function(el){
 				el.style.color = 'red';
-			}
+			})
 		}
 	}
 
