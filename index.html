@@ -14,10 +14,10 @@
 	        <h1>飞<span style = 'color:hotpink;'>花</span>令</h1>
 	        <p>作者: <a href="https://github.com/xinyzhang9" target = '_blank'>阳哥</a></p>
 	        <p style = 'color: #F1948A'>
-	        	<i class="fa fa-search" aria-hidden="true"></i> 查找 | 
-	        	<i class="fa fa-refresh" aria-hidden="true"></i> 下一首 | 
-	        	<i class="fa fa-tag" aria-hidden="true"></i> 加入收藏 | 
-	        	<i class="fa fa-history" aria-hidden="true"></i> 翻阅收藏
+	        	<i class="fa fa-search" aria-hidden="true"></i> 查阅 | 
+	        	<i class="fa fa-refresh" aria-hidden="true"></i> 遍览 | 
+	        	<i class="fa fa-tag" aria-hidden="true"></i> 收藏 | 
+	        	<i class="fa fa-history" aria-hidden="true"></i> 回顾
 	        </p>
 	        <hr class = 'style-two' />
     	</div>
@@ -27,9 +27,8 @@
 	    	<button id = 'refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
 			<button id = 'collect'><i class="fa fa-tag" aria-hidden="true"></i></button>
 			<button id = 'history'><i class="fa fa-history" aria-hidden="true"></i></button>
-
-	    	<span id = 'error' class = 'red'>根据规则，只能输入一个汉字。</span>
 	    </div>
+
         <div id = 'res'>
         	<h3 id = 'title'></h3>
         	<p id = 'author'></p>
@@ -38,6 +37,7 @@
         	<div id = 'full'></div>
         </div>
 	</div>
+	<div id = 'error' class = 'red'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
 <script type="text/javascript">
 	var refreshButton = document.getElementById('refresh');
@@ -52,7 +52,7 @@
 	var content_p = document.getElementById('content');
 	var author_p = document.getElementById('author');
 	var full_p = document.getElementById('full');
-
+	var error_msg = document.getElementById('error');
 	var current = null;
 	var cart = {};
 	var history_collection = [];//max-cap 50
@@ -65,7 +65,7 @@
 	var historyButtonStream = Rx.Observable.fromEvent(historyButton,'click');
 
 	full_p.style.display = 'none';
-	document.getElementById('error').style.display = 'none';
+	error_msg.style.display = 'none';
 	showButton.style.visibility = 'hidden';
 
 	showButton.addEventListener('click',function(){
@@ -98,14 +98,18 @@
 	    xobj.send(null);  
 	 }
 
+	function renderMsg(msg){
+		error_msg.textContent = msg;
+		$('#error').fadeIn('slow');
+		error_msg.style.color = 'red';
+		setTimeout(function(){ $('#error').fadeOut() }, 1000);
+	}
 	function match(c){
 		if(!c || c.length > 1){
-			$('#error').fadeIn('slow');
-			document.getElementById('error').style.color = 'red';
-			setTimeout(function(){ $('#error').fadeOut() }, 1000);
+			renderMsg('根据规则，只能输入一个汉字。')
 			return;
 		}
-		document.getElementById('error').textContent ='';
+		error_msg.textContent ='';
 		title_p.textContent = '查找中...';
 		loadJSON("data/p2.json", function(response) {
 	        var p_obj = JSON.parse(response);
@@ -130,7 +134,10 @@
 	}
 
 	function refreshPoem(){
-		if(res.length < 1) return;
+		if(res.length < 1){
+			renderMsg('请先点击查阅按钮。');
+			return;
+		};
 		var len = res.length;
 		return render(res[Math.floor(Math.random()*len)]);
 	}
@@ -195,14 +202,23 @@
 	}
 
 	function renderHistory(){
-		if(history_collection.length < 1) return;
+		if(history_collection.length < 1){
+			renderMsg('您的收藏夹为空。');
+			return;
+		}
+		showButton.style.visibility = 'visible';
+		full_p.style.display = "none";
+		showButton.innerHTML = '<i class="fa fa-toggle-off" aria-hidden="true"></i>';
+
 		var len = history_collection.length;
 		var chosen = history_collection[history_cursur % len];
+		renderMsg('正在查看收藏夹中第'+ (history_cursur % len+1) +'/'+ len+'首诗句。' );
 		history_cursur++;
 		title_p.textContent = chosen.title;
 		author_p.textContent = chosen.author;
 		content_p.innerHTML = chosen.content;
 		full_p.innerHTML = chosen.full;
+		
 		var els = document.querySelectorAll(".red");
 		if(els){
 			for(el of els){
@@ -240,7 +256,10 @@
 	})
 
 	collectButtonStream.subscribe(function(){
-		if(!current) return;
+		if(!current){
+			renderMsg('无可收藏的诗句。')
+			return;
+		};
 		if(!cart[current.id]){
 			if(history_collection.length >= 50){
 				var toPop = history_collection.shift();
@@ -248,8 +267,11 @@
 			}
 			cart[current.id] = current.id;
 			history_collection.push(current);
+			renderMsg('诗句已加入收藏。')
 			localStorage.setObj('cart',cart);
 			localStorage.setObj('history_collection',history_collection);
+		}else{
+			renderMsg('您已收藏过该诗句。');
 		}
 		// console.log(history_collection);
 	})

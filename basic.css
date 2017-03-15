@@ -55,3 +55,13 @@ hr.style-two {
 	padding-top: 20px;
 }
 
+#error{
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: 10%;
+  z-index: 10;
+}
+
