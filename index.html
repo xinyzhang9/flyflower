@@ -196,9 +196,10 @@
 			// console.log(current);
 			els = document.querySelectorAll(".red");
 			if(els){
-				els.forEach(function(el){
-					el.style.color = 'red';
-				})
+				[].forEach.call(els, function(el) {
+				  // do whatever
+				  el.style.color = "red";
+				});
 			}
 		}
 	}
@@ -223,9 +224,10 @@
 		
 		els = document.querySelectorAll(".red");
 		if(els){
-			els.forEach(function(el){
-				el.style.color = 'red';
-			})
+			[].forEach.call(els, function(el) {
+			  // do whatever
+			  el.style.color = "red";
+			});
 		}
 	}
 
