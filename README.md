@@ -12,11 +12,12 @@ A: ...
 ## Live
 [live demo](https://xinyzhang9.github.io/flyflower/)
 ## Features
-- [x] 查找相关诗句
-- [x] 随时翻阅全篇
-- [x] 离线收藏功能
-- [x] 高亮关键字
-- [x] 缓存常见字
+- [x] customized data structure to store poems| 高效数据结构
+- [x] search algorithm in O(1) time | 常数级检索算法
+- [x] full context display at anytime | 随时翻阅全篇
+- [x] off-line collection of poems | 离线收藏功能
+- [x] highlight key character | 高亮关键字
+- [x] cache common key character | 缓存常见字
 
 ## License
 GNU General Public License v3.0
