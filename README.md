@@ -11,6 +11,13 @@ A: ...
 
 ## Live
 [live demo](https://xinyzhang9.github.io/flyflower/)
+## Features
+* 查找相关诗句
+* 随时翻阅全篇
+* 离线收藏功能
+* 高亮关键字
+* 缓存常见字
+
 ## License
 GNU General Public License v3.0
 ## Technology
