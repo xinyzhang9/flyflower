@@ -3,9 +3,9 @@
 <head>
 	<title>飞花令</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="basic.css">
-	<link rel="icon" href="rose.ico">
+	<link rel="icon" href="favicon.ico">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	<script src="https://use.fontawesome.com/b8e7fe9976.js"></script>
 	<style type="text/css">
@@ -72,10 +72,6 @@
 	        </p>
 	        <hr class = 'style-two' />
     	</div>
-    	<div class="spinner" id = 'gif'>
-  <div class="cube1"></div>
-  <div class="cube2"></div>
-</div>
 	    <div id = 'mainbox'>
     		<input type = 'text' id = 'userinput' style="border:1px solid steelblue;padding-left: 5px;" placeholder = '在这里输入汉字'></input>
 	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -84,12 +80,16 @@
 	    </div>
 
         <div id = 'res'>
-        	<h3 id = 'title'></h3>
+        	<h3 id = 'title'>数据加载中...</h3>
         	<p id = 'author'></p>
         	<p id = 'content'></p>
         	<button id = 'show_full'><i class="fa fa-toggle-off" aria-hidden="true"></i></button>
         	<div id = 'full'></div>
         </div>
+        <div class="spinner" id = 'gif'>
+		  <div class="cube1"></div>
+		  <div class="cube2"></div>
+		</div>
 	</div>
 	<div id = 'error' class = 'red'></div>
 	
@@ -306,6 +306,7 @@
 	        searchButton.style.visibility = 'visible';
 	        collectButton.style.visibility = 'visible';
 	        historyButton.style.visibility = 'visible';
+	        title_p.textContent = '';
 	        loadJSON("data/p5.json", function(response) {
 		        common_cache = JSON.parse(response);
 				console.log('cache loaded');
