@@ -8,6 +8,57 @@
 	<link rel="icon" href="rose.ico">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	<script src="https://use.fontawesome.com/b8e7fe9976.js"></script>
+	<style type="text/css">
+		.spinner {
+		  margin: 100px auto;
+		  width: 32px;
+		  height: 32px;
+		  position: relative;
+		}
+		 
+		.cube1, .cube2 {
+		  background-color: #FFC0CB;
+		  width: 30px;
+		  height: 30px;
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		   
+		  -webkit-animation: cubemove 1.8s infinite ease-in-out;
+		  animation: cubemove 1.8s infinite ease-in-out;
+		}
+		 
+		.cube2 {
+		  -webkit-animation-delay: -0.9s;
+		  animation-delay: -0.9s;
+		}
+		 
+		@-webkit-keyframes cubemove {
+		  25% { -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5) }
+		  50% { -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg) }
+		  75% { -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5) }
+		  100% { -webkit-transform: rotate(-360deg) }
+		}
+		 
+		@keyframes cubemove {
+		  25% {
+		    transform: translateX(42px) rotate(-90deg) scale(0.5);
+		    -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
+		  } 50% {
+		    transform: translateX(42px) translateY(42px) rotate(-179deg);
+		    -webkit-transform: translateX(42px) translateY(42px) rotate(-179deg);
+		  } 50.1% {
+		    transform: translateX(42px) translateY(42px) rotate(-180deg);
+		    -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
+		  } 75% {
+		    transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+		    -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+		  } 100% {
+		    transform: rotate(-360deg);
+		    -webkit-transform: rotate(-360deg);
+		  }
+		}
+	</style>
 </head>
 <body>
 	<div class = 'container'>
@@ -21,6 +72,10 @@
 	        </p>
 	        <hr class = 'style-two' />
     	</div>
+    	<div class="spinner" id = 'gif'>
+  <div class="cube1"></div>
+  <div class="cube2"></div>
+</div>
 	    <div id = 'mainbox'>
     		<input type = 'text' id = 'userinput' style="border:1px solid steelblue;padding-left: 5px;" placeholder = '在这里输入汉字'></input>
 	    	<button id = 'search'><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -37,7 +92,8 @@
         </div>
 	</div>
 	<div id = 'error' class = 'red'></div>
-	<div id = 'gif' style = "width:100%;display:block;margin:auto;"><img src = "loading.gif" /></div>
+	
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js"></script>
 <script type="text/javascript">
 	var userInput = document.getElementById('userinput');
@@ -242,7 +298,6 @@
 			localStorage.setObj('cart',cart);
 			localStorage.setObj('history_collection',history_collection);
 		}
-
 		loadJSON("data/p3.json", function(response) {
 	        p_obj = JSON.parse(response);
 	        console.log('p_obj loaded');
@@ -256,7 +311,6 @@
 				console.log('cache loaded');
 		    });
 	    });
-		
 	}
 
 	init();
