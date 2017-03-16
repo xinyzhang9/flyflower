@@ -68,6 +68,11 @@
 	full_p.style.display = 'none';
 	// error_msg.style.display = 'none';
 	showButton.style.visibility = 'hidden';
+	userInput.style.visibility = 'hidden';
+	searchButton.style.visibility = 'hidden';
+	collectButton.style.visibility = 'hidden';
+	historyButton.style.visibility = 'hidden';
+
 
 	showButton.addEventListener('click',function(){
 		if(full_p.style.display == "none"){
@@ -240,6 +245,10 @@
 		loadJSON("data/p3.json", function(response) {
 	        p_obj = JSON.parse(response);
 	        console.log('p_obj loaded');
+	        userInput.style.visibility = 'visible';
+	        searchButton.style.visibility = 'visible';
+	        collectButton.style.visibility = 'visible';
+	        historyButton.style.visibility = 'visible';
 	        loadJSON("data/p5.json", function(response) {
 		        common_cache = JSON.parse(response);
 				console.log('cache loaded');
