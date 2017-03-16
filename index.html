@@ -55,7 +55,8 @@
 	var cart = {};
 	var history_collection = [];//max-cap 50
 	var history_cursur = 0;
-	var res = [];
+	var res = []; // contains matched verses.
+	var p_obj = null; // contains the whole poem object
 	var els = null;
 	var oldInput = null;
 	var common_cache = null;
@@ -111,24 +112,22 @@
 		}
 		error_msg.textContent ='';
 		title_p.textContent = '查找中...';
-		loadJSON("data/p2.json", function(response) {
-	        var p_obj = JSON.parse(response);
-	        for(var p of p_obj){
-	        	var content = p.d_poetry.trunkTitle();
-	        	var sentenses = content.split('。');
-	        	for(sentense of sentenses){
-	        		if(sentense.includes(c)){
-		        		res.push({
-		        			sentense:sentense,
-		        			poem:p
-		        		});
-		        	}
+        for(var p in p_obj){
+        	var poem = p_obj[p];
+        	var content = poem.d_poetry.trunkTitle();
+        	var sentenses = content.split('。');
+        	for(sentense of sentenses){
+        		if(sentense.includes(c)){
+	        		res.push({
+	        			sentense:sentense,
+	        			key:poem.d_title
+	        		});
 	        	}
-	        }
-	        showButton.style.visibility = 'visible';
-	        var len = res.length;
-	        return render(res[Math.floor(Math.random()*len)]);
-	    });
+        	}
+        }
+        showButton.style.visibility = 'visible';
+        var len = res.length;
+        return render(res[Math.floor(Math.random()*len)]);
 	}
 
 	function refreshPoem(){
@@ -178,17 +177,18 @@
 			res_div.style.display = 'none';
 		}else{
 			res_div.style.display = 'block';
-			title_p.textContent = obj.poem.d_title;
-			author_p.textContent = obj.poem.d_author;
+			var poem = p_obj[obj.key];
+			title_p.textContent = poem.d_title;
+			author_p.textContent = poem.d_author;
 			content_p.innerHTML = highlight(obj.sentense.trunkNote().recoverSentense(),userInput.value);
 			// console.log(obj.poem.d_poetry.trunkTitle());
-			full_p.innerHTML = obj.poem.d_poetry.trunkTitle().trunkNote().formatLine();
+			full_p.innerHTML = poem.d_poetry.trunkTitle().trunkNote().formatLine();
 			current = {
-						title: obj.poem.d_title, 
+						title: poem.d_title, 
 						content: content_p.innerHTML, 
-						author: obj.poem.d_author, 
+						author: poem.d_author, 
 						full: full_p.innerHTML, 
-						id: obj.poem.d_num
+						id: content_p.innerHTML
 					};
 			els = document.querySelectorAll(".red");
 			if(els){
@@ -237,10 +237,15 @@
 			localStorage.setObj('history_collection',history_collection);
 		}
 
-		loadJSON("data/p4.json", function(response) {
-	        common_cache = JSON.parse(response);
-			console.log('cache loaded');
+		loadJSON("data/p3.json", function(response) {
+	        p_obj = JSON.parse(response);
+	        console.log('p_obj loaded');
+	        loadJSON("data/p5.json", function(response) {
+		        common_cache = JSON.parse(response);
+				console.log('cache loaded');
+		    });
 	    });
+		
 	}
 
 	init();
