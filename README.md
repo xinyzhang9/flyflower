@@ -11,7 +11,8 @@ A: ...
 
 ## Live
 [live demo](https://xinyzhang9.github.io/flyflower/)
-
+## License
+GNU General Public License v3.0
 ## Technology
 **Rxjs**: interact with user's input.  
 **SQLite**: store original databases and is transformed to JSON before use.  
