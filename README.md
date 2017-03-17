@@ -26,4 +26,4 @@ GNU General Public License v3.0
 **SQLite**: store original databases and is transformed to JSON before use.  
 
 ## Screenshot
-![alt tag](https://raw.githubusercontent.com/xinyzhang9/flyflower/master/screen.png)
+![alt tag](https://raw.githubusercontent.com/xinyzhang9/flyflower/master/screen2.png)
