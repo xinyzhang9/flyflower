@@ -19,8 +19,6 @@ A: ...
 - [x] highlight key character | 高亮关键字
 - [x] cache common key character | 缓存常见字
 
-## License
-GNU General Public License v3.0
 ## Technology
 **Rxjs**: interact with user's input.  
 **SQLite**: store original databases and is transformed to JSON before use.  
